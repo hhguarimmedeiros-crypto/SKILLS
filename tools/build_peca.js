@@ -70,7 +70,7 @@ function addr(text) {
   return new Paragraph({
     alignment: AlignmentType.CENTER,
     spacing: { before: 0, after: 300 },
-    children: [new TextRun({ text, font: FONT, size: 24, bold: true })],
+    children: runs(text, { bold: true }),
   });
 }
 
