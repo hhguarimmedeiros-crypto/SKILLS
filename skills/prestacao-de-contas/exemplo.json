@@ -1,0 +1,20 @@
+{
+  "numero": "00",
+  "processo": "0000000-00.2025.8.11.0003",
+  "juizo": "Juizado Especial Cível de Rondonópolis/MT",
+  "re": "Companhia Aérea Exemplo S.A.",
+  "cliente": {"nome": "Maria Exemplo da Silva", "cpf": "000.000.000-00", "tratamento": "Olá,"},
+  "decisao": {
+    "tipo": "acórdão da Turma Recursal",
+    "data": "10/08/2026",
+    "condenacoes": [
+      {"descricao": "Danos morais", "valor": 6000},
+      {"descricao": "Danos materiais (restituição da passagem)", "valor": 1250.40}
+    ],
+    "sucumbencia_percentual": 15
+  },
+  "levantamento": {"valor_total": 9480.62, "data": "28/10/2026", "origem": "alvará eletrônico"},
+  "contrato": {"percentual": 30, "base": "credito_cliente", "clausula": "3ª"},
+  "despesas": [],
+  "pagamento": {"destino": "PIX na chave informada pela cliente", "prazo": "06/11/2026"}
+}
