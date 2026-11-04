@@ -85,3 +85,7 @@ Só julgado real e verificável. O portal de jurisprudência do TJPR e o Jusbras
 ## 8. Entrega
 
 Docx e PDF da peça, documentos soltos, e no retorno: o que mudou e por quê, o que ficou pendente e a conclusão de viabilidade. Para gravar na pasta do Google Drive, o conector aceita só arquivos de poucos KB (o conteúdo vai codificado na própria chamada); peça maior que isso eu arrasto do chat, ou conecto o computador pelo app desktop para gravação direta.
+
+## 9. Prestação de contas
+
+Quando eu mandar sentença ou acórdão com o contrato para prestar contas ao cliente, siga `prestacao-contas/README.md` e calcule com `tools/prestacao_contas.py`. Do valor levantado saem a sucumbência, os honorários contratuais (percentual e base **sempre do contrato enviado**) e a atualização monetária só se o contrato a destinar ao escritório. Entregue o texto para o cliente e o PDF com termo de quitação.
