@@ -22,7 +22,9 @@ for s in d.sections:
     # filete dourado acima do rodapé
     pPr = fp._p.get_or_add_pPr(); bd = OxmlElement('w:pBdr'); top = OxmlElement('w:top')
     for k, v in (('val','single'),('sz','4'),('space','4'),('color','987146')): top.set(qn('w:'+k), v)
-    bd.append(top); pPr.append(bd)
+    bd.append(top)
+    jc = pPr.find(qn('w:jc'))  # pBdr precisa vir antes de jc no esquema
+    (jc.addprevious(bd) if jc is not None else pPr.append(bd))
     r = fp.add_run('Av. Dr. Hélio Ribeiro, nº 525, Bairro Alvorada, Edifício Helbor Dual Business Office & Corporate, Sala 714, 7º andar, Cuiabá/MT, CEP 78.048-250')
     r.font.size = Pt(8); r.font.name = 'Palatino Linotype'; r.font.color.rgb = RGBColor(0x0F, 0x38, 0x49)
 d.save(dst)
