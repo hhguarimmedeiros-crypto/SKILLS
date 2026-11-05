@@ -38,3 +38,9 @@ Arquivos em `modelos/marca/` (extraídos do pacote LOGOTIPO BRUNA GUARIM 2):
 Paleta do guia de marca: azul-noite `#061822`, azul-petróleo `#0F3849`, dourado `#987146` a `#F0C985`, gelo `#EEF7FC`. Tipografia da marca: Selk Serif e Raleway Extra Light (no corpo da peça segue Palatino Linotype 12).
 
 Para pôr o timbre em qualquer peça: `python3 tools/aplica_timbre.py <entrada.docx> modelos/marca/logotipo-horizontal-cor.png <saida.docx>`. Logo de 7,5 cm centralizada no cabeçalho de todas as páginas, margem superior de 3,3 cm, e endereço do escritório no rodapé, em 8 pt azul-petróleo, sob filete dourado.
+
+### Preenchimento por script
+
+`tools/cumprimento_base.py` traz `par`, `cel`, `apaga_par` e `apaga_linhas`, que reescrevem o modelo mantendo a formatação. Fluxo: carregar o modelo, reescrever os parágrafos por índice, ajustar caixa de teses, Quadros I e II (apagar linhas de verbas que não existem) e nota interna, apagar parágrafos que não se aplicam (sucumbência, restituição administrativa, decisão recursal), procurar resíduos do caso anterior e olhar as páginas renderizadas. Se um quadro quebrar entre páginas, inserir quebra de página antes do título do quadro.
+
+Para TJSP: endereçar à Vara do Juizado da comarca, assinar com OAB/SP nº 539.434 (seguida de OAB/MT e OAB/RJ), pedir levantamento por mandado de levantamento eletrônico (MLE) e lembrar que o cumprimento no JEC paulista não recolhe taxa judiciária, salvo má-fé.
