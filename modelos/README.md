@@ -1,0 +1,28 @@
+# Modelos aprovados do escritório
+
+## Cumprimento de sentença (Juizado Especial)
+
+Arquivo: `MODELO PADRAO - CUMPRIMENTO DE SENTENCA - JEC.docx`, aprovado pelo escritório a partir do caso Eduardo Cesar Alves Lemes x SPE Mirante e WAM (7º JEC de Cuiabá, processo 1018572-93.2026.8.11.0001).
+
+Sempre parta deste arquivo (`cp` para a pasta de saída e edite com python-docx). Nunca redija do zero.
+
+### Estrutura que deve ser mantida
+
+1. Endereçamento em caixa alta, centralizado.
+2. **Caixa de teses vermelha** (tabela 1x2) com os cinco pontos do caso em tópicos.
+3. Número do processo.
+4. Qualificação: Exequente + **BRUNA CARLA GUARIM MEDEIROS** em nome próprio quanto à sucumbência (art. 23 da Lei 8.906/94 e art. 85, § 14, do CPC), com fundamento nos arts. 52 da Lei 9.099/95 e 523 a 527 do CPC.
+5. Caixa do nome da ação: CUMPRIMENTO DE SENTENÇA, com a base legal embaixo.
+6. I. DO TÍTULO EXECUTIVO JUDICIAL: sentença (Id e data), embargos, acórdão ou decisão monocrática (Id e data), trânsito em julgado.
+7. II. DO DÉBITO E DA MEMÓRIA DE CÁLCULO: índices do título, **Quadro I** (verba, marcos, original, corrigido, juros, total, subtotal do Exequente, sucumbência, total da execução) e **Quadro II** (índices mensais). Abatimento de restituição administrativa e legitimidade da advogada para a sucumbência. Frase do total destacada.
+8. III. DOS PEDIDOS: a) intimação na pessoa dos advogados (art. 513, § 2º, I) para pagar em 15 dias, separando o solidário da sucumbência; b) multa de 10% (art. 523, § 1º, e Enunciado 97 do FONAJE) e SISBAJUD; c) RENAJUD, INFOJUD e cadastro de inadimplentes (art. 782, § 3º); d) alvará eletrônico.
+9. Fecho: "Cuiabá/MT, data do protocolo." e assinatura:
+   BRUNA CARLA GUARIM MEDEIROS, ADVOGADA - OAB/MT nº 25.020, OAB/RJ nº 262.493.
+10. **Nota interna amarela** ao final com as pendências do caso, apagada antes do protocolo.
+
+### Regras de conteúdo
+
+- No Juizado não se pede honorários de 10% do art. 523, § 1º, só a multa (Enunciado 97 do FONAJE).
+- Sucumbência só contra o recorrente vencido (art. 55 da Lei 9.099/95).
+- Correção e juros exatamente como o dispositivo manda; padrão TJMT pós-Lei 14.905/24: IPCA (série 433 do BCB) e taxa legal (série 29543 do BCB), juros simples, pro rata no mês corrente. O SisCalc (`siscalc.tjmt.jus.br`) usa as mesmas séries, mas exige o CPF do interessado.
+- Premissas de data não confirmadas nos autos vão para a nota interna, nunca escondidas.

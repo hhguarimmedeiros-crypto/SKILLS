@@ -89,3 +89,7 @@ Docx e PDF da peça, documentos soltos, e no retorno: o que mudou e por quê, o 
 ## 9. Prestação de contas
 
 Quando eu mandar sentença ou acórdão com o contrato para prestar contas ao cliente, siga `prestacao-contas/README.md` e calcule com `tools/prestacao_contas.py`. Do valor levantado saem a sucumbência, os honorários contratuais (percentual e base **sempre do contrato enviado**) e a atualização monetária só se o contrato a destinar ao escritório. Entregue o texto para o cliente e o PDF com termo de quitação.
+
+## 10. Cumprimento de sentença
+
+Esqueleto aprovado: `modelos/MODELO PADRAO - CUMPRIMENTO DE SENTENCA - JEC.docx`. Siga `modelos/README.md`: parta do arquivo, troque os dados do caso, refaça os Quadros I e II com IPCA e taxa legal do Banco Central (ou SisCalc do TJMT quando houver o CPF), mantenha caixa de teses, caixa da ação e nota interna amarela com as pendências. Assinatura: BRUNA CARLA GUARIM MEDEIROS, OAB/MT nº 25.020 e OAB/RJ nº 262.493.
