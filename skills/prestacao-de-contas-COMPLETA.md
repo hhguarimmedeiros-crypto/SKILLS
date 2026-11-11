@@ -37,7 +37,7 @@ PY
 python3 /tmp/prestacao_contas.py caso.json /mnt/user-data/outputs
 ```
 
-Ordem: valor levantado, (-) honorários de sucumbência (art. 23 da Lei 8.906/94), (=) crédito do cliente (condenação + atualização monetária e juros), (-) honorários contratuais, (-) atualização se do escritório, (-) despesas, (=) líquido do cliente. A última linha impressa confere escritório + cliente + despesas = total levantado.
+Ordem (no cálculo interno): valor levantado, (-) honorários de sucumbência (art. 23 da Lei 8.906/94), (=) crédito do cliente (condenação + atualização monetária e juros), (-) honorários contratuais, (-) atualização se do escritório, (-) despesas, (=) líquido do cliente. A última linha impressa confere escritório + cliente + despesas = total levantado.
 
 O script **para com erro** se o levantamento menos a sucumbência for menor que a condenação nominal: indica valor digitado errado, pagamento parcial ou condenação reduzida no acórdão. Investigue, não force.
 
@@ -56,6 +56,10 @@ Sem ambiente de código: faça a mesma conta à mão, arredondando cada linha em
 1. texto pronto para colar no WhatsApp (negrito com `*`);
 2. PDF do demonstrativo com termo de quitação;
 3. no retorno: os números usados e de onde saiu cada um (folha da decisão, cláusula do contrato, alvará) e qualquer divergência encontrada.
+
+## 6. Sucumbência separada (padrão)
+
+O documento do cliente não mostra a sucumbência: começa pela condenação atualizada e o termo de quitação cobre só isso. A sucumbência e o total do escritório saem no arquivo `SUCUMBENCIA INTERNO`, que não vai ao cliente. `"sucumbencia_separada": false` volta ao formato com a sucumbência no demonstrativo.
 
 Antes do primeiro cálculo da conversa, grave o script do **Anexo B** em `/tmp/prestacao_contas.py`, exatamente como está, e grave o JSON do caso em `caso.json`.
 
@@ -183,16 +187,26 @@ BASE_TXT = {
 }
 
 
+def sep(caso, r):
+    """Padrão do escritório: a sucumbência fica fora da prestação de contas do cliente."""
+    return bool(r["suc"]) and caso.get("sucumbencia_separada", True)
+
+
 def linhas(caso, r):
     con = caso["contrato"]
     clausula = f", cláusula {con['clausula']}" if con.get("clausula") else ""
-    L = [("Valor total levantado", r["total"], "")]
-    if r["suc"]:
+    if sep(caso, r):   # sucumbência fora do documento do cliente
+        L = [("Valor da condenação atualizada", r["credito"],
+              f"condenação {brl(r['nominal'])} + atualização monetária e juros {brl(r['atualizacao'])}")]
+    else:
+        L = [("Valor total levantado", r["total"], "")]
+    if r["suc"] and not sep(caso, r):
         q = f"{pct(r['p_suc'])} fixados na decisão; " if r["p_suc"] else ""
         L.append(("(-) Honorários de sucumbência", r["suc"],
                   f"{q}pagos pela parte contrária, pertencem ao advogado (art. 23 da Lei 8.906/94)"))
-    L.append(("(=) Crédito do cliente", r["credito"],
-              f"condenação {brl(r['nominal'])} + atualização monetária e juros {brl(r['atualizacao'])}"))
+    if not sep(caso, r):
+        L.append(("(=) Crédito do cliente", r["credito"],
+                  f"condenação {brl(r['nominal'])} + atualização monetária e juros {brl(r['atualizacao'])}"))
     L.append(("(-) Honorários contratuais", r["hon"],
               f"{pct(r['p_con'])} {BASE_TXT[r['base_tipo']]}, conforme contrato{clausula}"))
     if r["atu_ret"]:
@@ -216,10 +230,14 @@ def texto(caso, r):
          f"Por {dec['tipo']} de {dec['data']}, {caso['re']} foi condenada a pagar:"]
     t += [f"• {c['descricao']}: {brl(c['valor'])}" for c in dec["condenacoes"]]
     t += ["", "*2. O que foi recebido*",
-          f"Em {lev['data']}, foi levantado {brl(r['total'])}"
-          + (f" ({lev['origem']})" if lev.get("origem") else "")
-          + ". Esse valor inclui a correção monetária e os juros do período"
-          + (" e os honorários de sucumbência fixados na decisão." if r["suc"] else "."),
+          (f"Em {lev['data']}, foi levantado o valor da sua condenação"
+           + (f" ({lev['origem']})" if lev.get("origem") else "")
+           + f", que, com a correção monetária e os juros do período, soma {brl(r['credito'])}."
+           if sep(caso, r) else
+           f"Em {lev['data']}, foi levantado {brl(r['total'])}"
+           + (f" ({lev['origem']})" if lev.get("origem") else "")
+           + ". Esse valor inclui a correção monetária e os juros do período"
+           + (" e os honorários de sucumbência fixados na decisão." if r["suc"] else ".")),
           "", "*3. Demonstrativo*"]
     for rot, v, obs in linhas(caso, r):
         neg = rot.startswith("(=) VALOR")
@@ -227,7 +245,7 @@ def texto(caso, r):
         if obs:
             t.append(f"   _{obs}_")
     t += ["", "*4. Entenda os descontos*"]
-    if r["suc"]:
+    if r["suc"] and not sep(caso, r):
         t.append("• Os honorários de sucumbência não saem do seu bolso: são pagos pela empresa "
                  "condenada e a lei os destina ao advogado.")
     if r["atu_ret"]:
@@ -273,8 +291,11 @@ def pdf(caso, r, dst):
                    + f"<br/><b>Parte contrária:</b> {caso['re']}", n), Spacer(1, 8),
          Paragraph(f"Por {dec['tipo']} de {dec['data']}, a parte contrária foi condenada a pagar "
                    + "; ".join(f"{c['descricao'].lower()}, {brl(c['valor'])}" for c in dec["condenacoes"])
-                   + f". Em {lev['data']} foi levantado o valor de {brl(r['total'])}"
-                   + (f" ({lev['origem']})" if lev.get("origem") else "") + ".", n), Spacer(1, 10)]
+                   + (f". Em {lev['data']} foi levantado o valor da condenação"
+                      + (f" ({lev['origem']})" if lev.get("origem") else "")
+                      + f", que, atualizado, soma {brl(r['credito'])}." if sep(caso, r) else
+                      f". Em {lev['data']} foi levantado o valor de {brl(r['total'])}"
+                      + (f" ({lev['origem']})" if lev.get("origem") else "") + "."), n), Spacer(1, 10)]
     rows = [["Descrição", "Valor"]]
     for rot, v, obs in linhas(caso, r):
         txt = f"<b>{rot}</b>" + (f"<br/><font size=8.5 color='#555555'>{obs}</font>" if obs else "")
@@ -298,7 +319,8 @@ def pdf(caso, r, dst):
           Paragraph("_______________________________________<br/>" + cli["nome"],
                     ParagraphStyle("c", parent=n, alignment=1)),
           Spacer(1, 6), Paragraph("Local e data: ____________________________", n), Spacer(1, 18),
-          Paragraph("Honorários de sucumbência: art. 23 da Lei 8.906/94. Honorários contratuais conforme "
+          Paragraph(("" if sep(caso, r) else "Honorários de sucumbência: art. 23 da Lei 8.906/94. ")
+                    + "Honorários contratuais conforme "
                     "contrato firmado entre as partes. Valores conferidos com a decisão e o comprovante "
                     "de levantamento.", s)]
     SimpleDocTemplate(dst, pagesize=A4, leftMargin=2.5 * cm, rightMargin=2.5 * cm,
@@ -316,6 +338,19 @@ def main():
     open(os.path.join(out, nome + ".txt"), "w", encoding="utf-8").write(txt)
     pdf(caso, r, os.path.join(out, nome + ".pdf"))
     print(txt)
+    if sep(caso, r):   # demonstrativo interno da sucumbência, que não vai ao cliente
+        q = f"{pct(r['p_suc'])} fixados na decisão" if r["p_suc"] else "conforme alvará"
+        interno = "\n".join([
+            f"DEMONSTRATIVO INTERNO - NÃO ENVIAR AO CLIENTE", f"Processo nº {caso['processo']} - {caso['cliente']['nome']} x {caso['re']}", "",
+            f"Valor total levantado ............ {brl(r['total'])}",
+            f"(-) Honorários de sucumbência ..... {brl(r['suc'])}  ({q}; art. 23 da Lei 8.906/94)",
+            f"(=) Condenação atualizada ......... {brl(r['credito'])}  (base da prestação de contas do cliente)",
+            f"(-) Honorários contratuais ........ {brl(r['hon'])}",
+            f"(-) Atualização retida ............ {brl(r['atu_ret'])}",
+            f"(=) Líquido do cliente ............ {brl(r['liquido'])}", "",
+            f"Total do escritório: sucumbência {brl(r['suc'])} + contratuais {brl(r['hon'])} + atualização {brl(r['atu_ret'])} = {brl(r['escritorio'])}"])
+        open(os.path.join(out, nome.replace("PRESTACAO DE CONTAS", "SUCUMBENCIA INTERNO") + ".txt"), "w", encoding="utf-8").write(interno)
+        print("\n" + interno)
     print(f"\n[conferência] escritório {brl(r['escritorio'])} + cliente {brl(r['liquido'])} + despesas "
           f"{brl(sum((v for _, v in r['despesas']), Decimal('0')))} = {brl(r['total'])}")
 

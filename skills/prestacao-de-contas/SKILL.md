@@ -34,7 +34,7 @@ Monte um JSON no formato de `exemplo.json`:
 python3 scripts/prestacao_contas.py caso.json /mnt/user-data/outputs
 ```
 
-Ordem: valor levantado, (-) honorários de sucumbência (art. 23 da Lei 8.906/94), (=) crédito do cliente (condenação + atualização monetária e juros), (-) honorários contratuais, (-) atualização se do escritório, (-) despesas, (=) líquido do cliente. A última linha impressa confere escritório + cliente + despesas = total levantado.
+Ordem (no cálculo interno): valor levantado, (-) honorários de sucumbência (art. 23 da Lei 8.906/94), (=) crédito do cliente (condenação + atualização monetária e juros), (-) honorários contratuais, (-) atualização se do escritório, (-) despesas, (=) líquido do cliente. A última linha impressa confere escritório + cliente + despesas = total levantado.
 
 O script **para com erro** se o levantamento menos a sucumbência for menor que a condenação nominal: indica valor digitado errado, pagamento parcial ou condenação reduzida no acórdão. Investigue, não force.
 
@@ -53,3 +53,7 @@ Sem ambiente de código: faça a mesma conta à mão, arredondando cada linha em
 1. texto pronto para colar no WhatsApp (negrito com `*`);
 2. PDF do demonstrativo com termo de quitação;
 3. no retorno: os números usados e de onde saiu cada um (folha da decisão, cláusula do contrato, alvará) e qualquer divergência encontrada.
+
+## 6. Sucumbência separada (padrão)
+
+O documento do cliente não mostra a sucumbência: começa pela condenação atualizada e o termo de quitação cobre só isso. A sucumbência e o total do escritório saem no arquivo `SUCUMBENCIA INTERNO`, que não vai ao cliente. `"sucumbencia_separada": false` volta ao formato com a sucumbência no demonstrativo.

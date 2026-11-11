@@ -41,3 +41,7 @@ O script **para com erro** se o levantamento menos a sucumbência for menor que 
 ## 5. Entrega
 
 Texto pronto para colar, PDF do demonstrativo com termo de quitação e, no retorno: os números usados, de onde saiu cada um (folha ou cláusula) e qualquer divergência encontrada.
+
+## 6. Sucumbência separada (padrão do escritório)
+
+A prestação de contas do cliente **não mostra a sucumbência**. O demonstrativo começa pela condenação atualizada (levantado menos sucumbência), e o termo de quitação cobre só isso. A sucumbência vai num arquivo à parte, `<nº> - SUCUMBENCIA INTERNO - <Cliente>.txt`, que **não se envia ao cliente**: ele mostra o levantado total, a sucumbência, o total do escritório e a conferência com o alvará. Para voltar ao formato antigo num caso específico, use `"sucumbencia_separada": false` no JSON.
