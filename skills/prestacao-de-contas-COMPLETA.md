@@ -196,7 +196,9 @@ def linhas(caso, r):
     L.append(("(-) Honorários contratuais", r["hon"],
               f"{pct(r['p_con'])} {BASE_TXT[r['base_tipo']]}, conforme contrato{clausula}"))
     if r["atu_ret"]:
-        L.append(("(-) Atualização monetária", r["atu_ret"], f"conforme contrato{clausula}"))
+        ca = f", cláusula {con['clausula_atualizacao']}" if con.get("clausula_atualizacao") else clausula
+        L.append(("(-) Atualização monetária e juros", r["atu_ret"],
+                  f"correção e juros do período, devidos à advogada conforme contrato{ca}"))
     for desc, v in r["despesas"]:
         L.append((f"(-) {desc}", v, "despesa adiantada pelo escritório"))
     L.append(("(=) VALOR LÍQUIDO DO CLIENTE", r["liquido"], ""))
@@ -217,7 +219,7 @@ def texto(caso, r):
           f"Em {lev['data']}, foi levantado {brl(r['total'])}"
           + (f" ({lev['origem']})" if lev.get("origem") else "")
           + ". Esse valor inclui a correção monetária e os juros do período"
-          + (" e os honorários de sucumbência fixados pelo juiz." if r["suc"] else "."),
+          + (" e os honorários de sucumbência fixados na decisão." if r["suc"] else "."),
           "", "*3. Demonstrativo*"]
     for rot, v, obs in linhas(caso, r):
         neg = rot.startswith("(=) VALOR")
@@ -228,8 +230,14 @@ def texto(caso, r):
     if r["suc"]:
         t.append("• Os honorários de sucumbência não saem do seu bolso: são pagos pela empresa "
                  "condenada e a lei os destina ao advogado.")
-    t.append("• Os honorários contratuais são os combinados no contrato que você assinou, "
-             "calculados sobre o que você efetivamente recebeu.")
+    if r["atu_ret"]:
+        t.append("• A correção monetária e os juros do período ficam com o escritório, como previsto no "
+                 "contrato, porque não houve cobrança de nenhum valor antecipado para entrar com a ação.")
+        t.append(f"• Os honorários contratuais de {pct(r['p_con'])} incidem só sobre o valor da condenação "
+                 f"({brl(r['nominal'])}), sem a correção.")
+    else:
+        t.append("• Os honorários contratuais são os combinados no contrato que você assinou, "
+                 "calculados sobre o que você efetivamente recebeu.")
     pag = caso.get("pagamento", {})
     t += ["", "*5. Pagamento*",
           f"Vamos transferir *{brl(r['liquido'])}* "
@@ -253,7 +261,12 @@ def pdf(caso, r, dst):
     h = ParagraphStyle("h", parent=n, fontName="Times-Bold", fontSize=14, alignment=1, textColor=VERM)
     s = ParagraphStyle("s", parent=n, fontSize=8.5, leading=11, textColor=colors.HexColor("#555555"))
     cli, dec, lev = caso["cliente"], caso["decisao"], caso["levantamento"]
-    E = [Paragraph("PRESTAÇÃO DE CONTAS", h), Spacer(1, 10),
+    E = []
+    logo = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "modelos", "marca", "logotipo-horizontal-cor.png")
+    if os.path.exists(logo):
+        from reportlab.platypus import Image as RLImage
+        E += [RLImage(logo, width=7.5 * cm, height=7.5 * cm * 516 / 3621), Spacer(1, 14)]
+    E += [Paragraph("PRESTAÇÃO DE CONTAS", h), Spacer(1, 10),
          Paragraph(f"<b>Processo:</b> {caso['processo']}<br/><b>Juízo:</b> {caso.get('juizo', '')}"
                    f"<br/><b>Cliente:</b> {cli['nome']}"
                    + (f" (CPF {cli['cpf']})" if cli.get("cpf") else "")
