@@ -48,4 +48,4 @@ A prestação de contas do cliente **não mostra a sucumbência**. O demonstrati
 
 ## 7. Texto do WhatsApp (padrão do escritório)
 
-Sempre curto: saudação, notícia, condenação e valor atualizado, os descontos do contrato em tópicos, "💰 *Você recebe: R$ X*", "Segue o contrato e o comprovante do PIX. 📎" e o fecho "Foi um prazer cuidar do seu caso!". O detalhamento completo e o termo de quitação ficam no PDF. Campos opcionais no JSON: `re_curto` (ex.: "Azul") e `pagamento.mensagem` para trocar a linha do PIX.
+Sempre curto: saudação, notícia, condenação e valor atualizado, os descontos do contrato em tópicos, "💰 *Você recebe: R$ X*", "Segue o contrato e o comprovante do PIX. 📎" e o fecho "Foi um prazer cuidar do seu caso!". O detalhamento completo e o termo de quitação ficam no PDF. Campos opcionais no JSON: `recado` (aviso extra, como o andamento de outro processo do cliente), `re_curto` (ex.: "Azul") e `pagamento.mensagem` para trocar a linha do PIX.

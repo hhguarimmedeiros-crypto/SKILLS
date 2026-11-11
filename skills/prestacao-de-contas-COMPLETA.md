@@ -247,6 +247,8 @@ def texto(caso, r):
     t += ["", f"💰 *Você recebe: {brl(r['liquido'])}*", ""]
     # padrão do escritório: a mensagem vai junto com o contrato e o comprovante do PIX já feito
     t.append(pag.get("mensagem", "Segue o contrato e o comprovante do PIX. 📎"))
+    if caso.get("recado"):   # aviso extra ao cliente, ex.: andamento de outro processo
+        t += ["", caso["recado"]]
     t += ["", "Foi um prazer cuidar do seu caso! Qualquer dúvida, é só chamar. 🙏", "",
           caso.get("assinatura", "Bruna Guarim Advocacia")]
     return "\n".join(t)
