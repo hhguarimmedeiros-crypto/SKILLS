@@ -3,15 +3,35 @@
   "processo": "1016252-70.2026.8.11.0001",
   "juizo": "6º Juizado Especial Cível de Cuiabá/MT",
   "re": "Azul Linhas Aéreas Brasileiras S.A.",
-  "cliente": {"nome": "Amir Gil Sessim", "cpf": "017.263.100-94", "tratamento": "Olá,"},
+  "cliente": {
+    "nome": "Amir Gil Sessim",
+    "cpf": "017.263.100-94",
+    "tratamento": "Olá,"
+  },
   "decisao": {
     "tipo": "sentença",
     "data": "29/05/2026, confirmada pela Turma Recursal em 21/08/2026",
-    "condenacoes": [{"descricao": "Danos morais", "valor": 8000.00}],
+    "condenacoes": [
+      {
+        "descricao": "Danos morais",
+        "valor": 8000.0
+      }
+    ],
     "sucumbencia_percentual": 10
   },
-  "levantamento": {"valor_total": 9499.70, "data": "11/11/2026", "origem": "alvará eletrônico nº 20261110171350020043"},
-  "contrato": {"percentual": 30, "base": "condenacao_nominal", "clausula": "2ª", "clausula_atualizacao": "3ª", "atualizacao_destino": "escritorio"},
+  "levantamento": {
+    "valor_total": 9499.7,
+    "data": "11/11/2026",
+    "origem": "alvará eletrônico nº 20261110171350020043"
+  },
+  "contrato": {
+    "percentual": 30,
+    "base": "condenacao_nominal",
+    "clausula": "2ª",
+    "clausula_atualizacao": "3ª",
+    "atualizacao_destino": "escritorio"
+  },
   "despesas": [],
-  "pagamento": {}
+  "pagamento": {},
+  "re_curto": "Azul"
 }

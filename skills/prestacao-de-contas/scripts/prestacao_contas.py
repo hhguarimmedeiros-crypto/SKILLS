@@ -125,50 +125,31 @@ def linhas(caso, r):
 
 
 def texto(caso, r):
-    dec, lev, cli = caso["decisao"], caso["levantamento"], caso["cliente"]
-    trat = cli.get("tratamento", "Prezado(a)")
-    t = [f"*PRESTAÇÃO DE CONTAS*", f"Processo nº {caso['processo']}",
-         f"{cli['nome']} x {caso['re']}", "", f"{trat} {cli['nome'].split()[0]},", "",
-         f"Temos uma ótima notícia: o seu processo contra {caso['re']} foi concluído e o valor já foi "
-         f"levantado. Segue a prestação de contas, com cada valor explicado.", "",
-         f"*1. O que a Justiça decidiu*",
-         f"Por {dec['tipo']} de {dec['data']}, {caso['re']} foi condenada a pagar:"]
-    t += [f"• {c['descricao']}: {brl(c['valor'])}" for c in dec["condenacoes"]]
-    t += ["", "*2. O que foi recebido*",
-          (f"Em {lev['data']}, foi levantado o valor da sua condenação"
-           + (f" ({lev['origem']})" if lev.get("origem") else "")
-           + f", que, com a correção monetária e os juros do período, soma {brl(r['credito'])}."
-           if sep(caso, r) else
-           f"Em {lev['data']}, foi levantado {brl(r['total'])}"
-           + (f" ({lev['origem']})" if lev.get("origem") else "")
-           + ". Esse valor inclui a correção monetária e os juros do período"
-           + (" e os honorários de sucumbência fixados na decisão." if r["suc"] else ".")),
-          "", "*3. Demonstrativo*"]
-    for rot, v, obs in linhas(caso, r):
-        neg = rot.startswith("(=) VALOR")
-        t.append(f"{'*' if neg else ''}{rot}: {brl(v)}{'*' if neg else ''}")
-        if obs:
-            t.append(f"   _{obs}_")
-    t += ["", "*4. Entenda os descontos*"]
-    if r["suc"] and not sep(caso, r):
-        t.append("• Os honorários de sucumbência não saem do seu bolso: são pagos pela empresa "
-                 "condenada e a lei os destina ao advogado.")
-    if r["atu_ret"]:
-        t.append("• A correção monetária e os juros do período ficam com o escritório, como previsto no "
-                 "contrato, porque não houve cobrança de nenhum valor antecipado para entrar com a ação.")
-        t.append(f"• Os honorários contratuais de {pct(r['p_con'])} incidem só sobre o valor da condenação "
-                 f"({brl(r['nominal'])}), sem a correção.")
-    else:
-        t.append("• Os honorários contratuais são os combinados no contrato que você assinou, "
-                 "calculados sobre o que você efetivamente recebeu.")
+    """Texto curto para WhatsApp (padrão do escritório). O detalhamento completo fica no PDF."""
+    dec, cli = caso["decisao"], caso["cliente"]
+    re_ = caso.get("re_curto") or caso["re"]
     pag = caso.get("pagamento", {})
-    t += ["", "*5. Pagamento*",
-          f"Vamos transferir *{brl(r['liquido'])}* "
-          + (f"para {pag['destino']}" if pag.get("destino") else "para a conta que você indicar")
-          + (f" até {pag['prazo']}" if pag.get("prazo") else "") + ".",
-          "Ao receber, pedimos que assine o termo de quitação em anexo.", "",
-          "Foi uma alegria cuidar do seu caso. Qualquer dúvida, estamos à disposição!", "",
-          caso.get("assinatura", "Bruna Guarim Advocacia & Direito do Passageiro")]
+    conds = [f"*{brl(c['valor'])}* de {c['descricao'][0].lower() + c['descricao'][1:]}" for c in dec["condenacoes"]]
+    conds = conds[0] if len(conds) == 1 else ", ".join(conds[:-1]) + " e " + conds[-1]
+    base = {"condenacao_nominal": f"sobre os {brl(r['nominal'])}",
+            "credito_cliente": f"sobre o valor atualizado de {brl(r['credito'])}",
+            "valor_total": f"sobre o total levantado de {brl(r['total'])}"}[r["base_tipo"]]
+    t = [f"Olá, {cli['nome'].split()[0]}! Tudo bem? 😊", "",
+         "Ótima notícia: seu processo contra a " + re_ + " terminou e o valor já foi liberado! ✅", "",
+         f"A Justiça condenou a {re_} a pagar {conds}. Com a correção e os juros, o valor ficou em "
+         f"*{brl(r['credito'])}*.", "", "Como combinado no contrato:"]
+    if r["suc"] and not sep(caso, r):
+        t.append(f"• Honorários de sucumbência, pagos pela {re_} ao escritório: {brl(r['suc'])}")
+    t.append(f"• {pct(r['p_con'])} de honorários {base}: {brl(r['hon'])}")
+    if r["atu_ret"]:
+        t.append(f"• Correção e juros, que ficam com o escritório: {brl(r['atu_ret'])}")
+    for desc, v in r["despesas"]:
+        t.append(f"• {desc}, adiantado pelo escritório: {brl(v)}")
+    t += ["", f"💰 *Você recebe: {brl(r['liquido'])}*", ""]
+    # padrão do escritório: a mensagem vai junto com o contrato e o comprovante do PIX já feito
+    t.append(pag.get("mensagem", "Segue o contrato e o comprovante do PIX. 📎"))
+    t += ["", "Foi um prazer cuidar do seu caso! Qualquer dúvida, é só chamar. 🙏", "",
+          caso.get("assinatura", "Bruna Guarim Advocacia")]
     return "\n".join(t)
 
 

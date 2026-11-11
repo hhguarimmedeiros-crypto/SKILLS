@@ -57,3 +57,7 @@ Sem ambiente de código: faça a mesma conta à mão, arredondando cada linha em
 ## 6. Sucumbência separada (padrão)
 
 O documento do cliente não mostra a sucumbência: começa pela condenação atualizada e o termo de quitação cobre só isso. A sucumbência e o total do escritório saem no arquivo `SUCUMBENCIA INTERNO`, que não vai ao cliente. `"sucumbencia_separada": false` volta ao formato com a sucumbência no demonstrativo.
+
+## 7. Texto do WhatsApp (padrão)
+
+Sempre curto: saudação, condenação e valor atualizado, descontos do contrato em tópicos, "💰 *Você recebe: R$ X*", "Segue o contrato e o comprovante do PIX. 📎" e fecho. Detalhes e termo de quitação ficam no PDF. Use `re_curto` para o nome curto da ré e `pagamento.mensagem` para trocar a linha do PIX.

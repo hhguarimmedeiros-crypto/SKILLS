@@ -45,3 +45,7 @@ Texto pronto para colar, PDF do demonstrativo com termo de quitação e, no reto
 ## 6. Sucumbência separada (padrão do escritório)
 
 A prestação de contas do cliente **não mostra a sucumbência**. O demonstrativo começa pela condenação atualizada (levantado menos sucumbência), e o termo de quitação cobre só isso. A sucumbência vai num arquivo à parte, `<nº> - SUCUMBENCIA INTERNO - <Cliente>.txt`, que **não se envia ao cliente**: ele mostra o levantado total, a sucumbência, o total do escritório e a conferência com o alvará. Para voltar ao formato antigo num caso específico, use `"sucumbencia_separada": false` no JSON.
+
+## 7. Texto do WhatsApp (padrão do escritório)
+
+Sempre curto: saudação, notícia, condenação e valor atualizado, os descontos do contrato em tópicos, "💰 *Você recebe: R$ X*", "Segue o contrato e o comprovante do PIX. 📎" e o fecho "Foi um prazer cuidar do seu caso!". O detalhamento completo e o termo de quitação ficam no PDF. Campos opcionais no JSON: `re_curto` (ex.: "Azul") e `pagamento.mensagem` para trocar a linha do PIX.
