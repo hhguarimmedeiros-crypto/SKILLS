@@ -1,0 +1,38 @@
+{
+  "processo": "1015197-84.2026.8.11.0001",
+  "juizo": "4º Juizado Especial Cível de Cuiabá/MT",
+  "re": "Azul Linhas Aéreas Brasileiras S.A.",
+  "re_curto": "Azul",
+  "decisao": {
+    "tipo": "sentença",
+    "data": "27/04/2026, confirmada pela Turma Recursal em 20/08/2026",
+    "condenacoes": [
+      {
+        "descricao": "Danos morais",
+        "valor": 4000.0
+      }
+    ],
+    "sucumbencia_percentual": 20
+  },
+  "contrato": {
+    "percentual": 30,
+    "base": "condenacao_nominal",
+    "clausula": "2ª",
+    "clausula_atualizacao": "3ª",
+    "atualizacao_destino": "escritorio"
+  },
+  "despesas": [],
+  "pagamento": {},
+  "numero": "03",
+  "cliente": {
+    "nome": "Rony Kley Queiroz Oliveira",
+    "cpf": "028.337.021-16",
+    "tratamento": "Olá,"
+  },
+  "levantamento": {
+    "valor_total": 5109.14,
+    "sucumbencia": 851.52,
+    "data": "11/11/2026",
+    "origem": "depósito judicial"
+  }
+}
