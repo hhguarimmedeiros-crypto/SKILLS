@@ -27,7 +27,9 @@
   "contrato": {
     "percentual": 30,
     "base": "condenacao_nominal",
-    "clausula": "2ª"
+    "clausula": "2ª",
+    "clausula_atualizacao": "3ª",
+    "atualizacao_destino": "escritorio"
   },
   "despesas": [],
   "pagamento": {},
