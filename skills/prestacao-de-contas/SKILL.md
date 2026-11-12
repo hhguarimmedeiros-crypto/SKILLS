@@ -60,4 +60,9 @@ O documento do cliente não mostra a sucumbência: começa pela condenação atu
 
 ## 7. Texto do WhatsApp (padrão)
 
-Sempre curto: saudação, condenação e valor atualizado, descontos do contrato em tópicos, "💰 *Você recebe: R$ X*", "Segue o contrato e o comprovante do PIX. 📎" e fecho. Detalhes e termo de quitação ficam no PDF. Use `re_curto` para o nome curto da ré e `pagamento.mensagem` para trocar a linha do PIX.
+Sempre curto: saudação, condenação e valor atualizado, descontos do contrato em tópicos, "💰 *Você recebe: R$ X*", "Segue o comprovante do PIX. 📎" e fecho. Detalhes e termo de quitação ficam no PDF. Use `re_curto` para o nome curto da ré e `pagamento.mensagem` para trocar a linha do PIX.
+
+
+## 8. O que vai ao cliente
+
+Só o texto do WhatsApp, com o comprovante do PIX. O PDF com demonstrativo e termo de quitação não é gerado por padrão; use `"pdf": true` no JSON quando precisar dele. O demonstrativo interno da sucumbência é sempre gerado e fica no escritório.

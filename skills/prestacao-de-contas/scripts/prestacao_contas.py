@@ -146,8 +146,8 @@ def texto(caso, r):
     for desc, v in r["despesas"]:
         t.append(f"• {desc}, adiantado pelo escritório: {brl(v)}")
     t += ["", f"💰 *Você recebe: {brl(r['liquido'])}*", ""]
-    # padrão do escritório: a mensagem vai junto com o contrato e o comprovante do PIX já feito
-    t.append(pag.get("mensagem", "Segue o contrato e o comprovante do PIX. 📎"))
+    # padrão do escritório: ao cliente vai só este texto, junto com o comprovante do PIX
+    t.append(pag.get("mensagem", "Segue o comprovante do PIX. 📎"))
     if caso.get("recado"):   # aviso extra ao cliente, ex.: andamento de outro processo
         t += ["", caso["recado"]]
     t += ["", "Foi um prazer cuidar do seu caso! Qualquer dúvida, é só chamar. 🙏", "",
@@ -224,7 +224,8 @@ def main():
     nome = f"{caso.get('numero', '00')} - PRESTACAO DE CONTAS - {caso['cliente']['nome']}"
     txt = texto(caso, r)
     open(os.path.join(out, nome + ".txt"), "w", encoding="utf-8").write(txt)
-    pdf(caso, r, os.path.join(out, nome + ".pdf"))
+    if caso.get("pdf"):   # PDF com termo de quitação só quando pedido; o padrão é texto + comprovante do PIX
+        pdf(caso, r, os.path.join(out, nome + ".pdf"))
     print(txt)
     if sep(caso, r):   # demonstrativo interno da sucumbência, que não vai ao cliente
         q = f"{pct(r['p_suc'])} fixados na decisão" if r["p_suc"] else "conforme alvará"

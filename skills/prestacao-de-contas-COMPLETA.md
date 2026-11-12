@@ -63,7 +63,12 @@ O documento do cliente não mostra a sucumbência: começa pela condenação atu
 
 ## 7. Texto do WhatsApp (padrão)
 
-Sempre curto: saudação, condenação e valor atualizado, descontos do contrato em tópicos, "💰 *Você recebe: R$ X*", "Segue o contrato e o comprovante do PIX. 📎" e fecho. Detalhes e termo de quitação ficam no PDF. Use `re_curto` para o nome curto da ré e `pagamento.mensagem` para trocar a linha do PIX.
+Sempre curto: saudação, condenação e valor atualizado, descontos do contrato em tópicos, "💰 *Você recebe: R$ X*", "Segue o comprovante do PIX. 📎" e fecho. Detalhes e termo de quitação ficam no PDF. Use `re_curto` para o nome curto da ré e `pagamento.mensagem` para trocar a linha do PIX.
+
+
+## 8. O que vai ao cliente
+
+Só o texto do WhatsApp, com o comprovante do PIX. O PDF com demonstrativo e termo de quitação não é gerado por padrão; use `"pdf": true` no JSON quando precisar dele. O demonstrativo interno da sucumbência é sempre gerado e fica no escritório.
 
 Antes do primeiro cálculo da conversa, grave o script do **Anexo B** em `/tmp/prestacao_contas.py`, exatamente como está, e grave o JSON do caso em `caso.json`.
 
@@ -245,8 +250,8 @@ def texto(caso, r):
     for desc, v in r["despesas"]:
         t.append(f"• {desc}, adiantado pelo escritório: {brl(v)}")
     t += ["", f"💰 *Você recebe: {brl(r['liquido'])}*", ""]
-    # padrão do escritório: a mensagem vai junto com o contrato e o comprovante do PIX já feito
-    t.append(pag.get("mensagem", "Segue o contrato e o comprovante do PIX. 📎"))
+    # padrão do escritório: ao cliente vai só este texto, junto com o comprovante do PIX
+    t.append(pag.get("mensagem", "Segue o comprovante do PIX. 📎"))
     if caso.get("recado"):   # aviso extra ao cliente, ex.: andamento de outro processo
         t += ["", caso["recado"]]
     t += ["", "Foi um prazer cuidar do seu caso! Qualquer dúvida, é só chamar. 🙏", "",
@@ -323,7 +328,8 @@ def main():
     nome = f"{caso.get('numero', '00')} - PRESTACAO DE CONTAS - {caso['cliente']['nome']}"
     txt = texto(caso, r)
     open(os.path.join(out, nome + ".txt"), "w", encoding="utf-8").write(txt)
-    pdf(caso, r, os.path.join(out, nome + ".pdf"))
+    if caso.get("pdf"):   # PDF com termo de quitação só quando pedido; o padrão é texto + comprovante do PIX
+        pdf(caso, r, os.path.join(out, nome + ".pdf"))
     print(txt)
     if sep(caso, r):   # demonstrativo interno da sucumbência, que não vai ao cliente
         q = f"{pct(r['p_suc'])} fixados na decisão" if r["p_suc"] else "conforme alvará"
