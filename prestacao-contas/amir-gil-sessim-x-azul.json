@@ -26,7 +26,7 @@
   },
   "contrato": {
     "percentual": 30,
-    "base": "credito_cliente",
+    "base": "condenacao_nominal",
     "clausula": "2ª"
   },
   "despesas": [],

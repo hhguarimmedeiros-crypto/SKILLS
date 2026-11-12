@@ -88,7 +88,7 @@ Docx e PDF da peça, documentos soltos, e no retorno: o que mudou e por quê, o 
 
 ## 9. Prestação de contas
 
-Quando eu mandar sentença ou acórdão com o contrato para prestar contas ao cliente, siga `prestacao-contas/README.md` e calcule com `tools/prestacao_contas.py`. Regra do escritório: a sucumbência não entra na conta do cliente; os honorários contratuais (percentual **sempre do contrato enviado**) incidem sobre o principal com atualização, e a atualização fica com o cliente. Ao cliente vai só o texto curto do WhatsApp, com o comprovante do PIX; a sucumbência fica fora e vai para o demonstrativo interno. PDF com termo de quitação só quando pedido.
+Quando eu mandar sentença ou acórdão com o contrato para prestar contas ao cliente, siga `prestacao-contas/README.md` e calcule com `tools/prestacao_contas.py`. Do valor levantado saem a sucumbência, os honorários contratuais (percentual e base **sempre do contrato enviado**) e a atualização monetária só se o contrato a destinar ao escritório. Ao cliente vai só o texto curto do WhatsApp, com o comprovante do PIX; a sucumbência fica fora e vai para o demonstrativo interno. PDF com termo de quitação só quando pedido.
 
 ## 10. Cumprimento de sentença
 
