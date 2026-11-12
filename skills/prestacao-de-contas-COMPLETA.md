@@ -17,6 +17,8 @@ Leia tudo antes de calcular (`pdftotext -layout`; se não sair texto, `pdftoppm 
 | Contrato | **percentual dos honorários contratuais**, **base de cálculo** e número da cláusula; destino da atualização monetária; despesas reembolsáveis. **O percentual sempre sai do contrato enviado, nunca se presume.** Sem contrato, pare e peça. |
 | Alvará / comprovante | valor total levantado, data, origem; se separa a sucumbência, use esse valor. |
 
+**Regra do escritório (desde 12/11/2026):** os honorários contratuais incidem sobre o **principal com atualização** (condenação + correção + juros), a **sucumbência não entra na conta** do cliente e a **atualização fica com o cliente**, mesmo que o contrato tenha cláusula destinando-a à advogada. No JSON: `"base": "credito_cliente"` e sem `atualizacao_destino`. Só use outra base se a Dra. Bruna pedir para o caso.
+
 ## 2. Montagem do caso
 
 Monte um JSON no formato do **Anexo A**:
